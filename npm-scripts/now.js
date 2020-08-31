@@ -9,12 +9,6 @@ const nowJson = `${distDir}/now.json`
 require('dotenv').config()
 
 const main = async () => {
-  // const datetime = moment().format('YYYY-MM-DD HH:mm:ss')
-  // const distDir = './dist/json'
-  // const fileName = `${distDir}/now.json`
-  // fs.mkdirsSync(distDir)
-  // fs.writeFile(fileName, JSON.stringify({datetime}, null, 2))
-
   const ftp = new PromiseFtp()
   try {
     const datetime = moment().format('YYYY-MM-DD HH:mm:ss')
