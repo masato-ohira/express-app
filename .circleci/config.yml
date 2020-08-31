@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: circleci/node:12.13-browsers-legacy
+        environment:
+          TZ: Asia/Tokyo
     steps:
       - checkout
       - run: yarn
