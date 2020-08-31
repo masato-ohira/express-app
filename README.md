@@ -1,12 +1,12 @@
 # express-app
 
-## 主要コマンド
+## Main command
 
 ``` bash
-# モジュールのinstall
+# Install
 yarn
 
-# 起動
+# Start up
 yarn dev
 ```
 
