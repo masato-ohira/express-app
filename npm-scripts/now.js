@@ -1,12 +1,42 @@
 const moment = require('moment')
 const fs = require('fs-extra')
+const _ = require('lodash')
+const PromiseFtp = require('promise-ftp')
 
-const main = () => {
-  const datetime = moment().format('YYYY-MM-DD HH:mm:ss')
-  const distDir = './dist/json'
-  const fileName = `${distDir}/now.json`
-  fs.mkdirsSync(distDir)
-  fs.writeFile(fileName, JSON.stringify({datetime}, null, 2))
+const distDir = './dist/json'
+const nowJson = `${distDir}/now.json`
+
+require('dotenv').config()
+
+const main = async () => {
+  // const datetime = moment().format('YYYY-MM-DD HH:mm:ss')
+  // const distDir = './dist/json'
+  // const fileName = `${distDir}/now.json`
+  // fs.mkdirsSync(distDir)
+  // fs.writeFile(fileName, JSON.stringify({datetime}, null, 2))
+
+  const ftp = new PromiseFtp()
+  try {
+    const datetime = moment().format('YYYY-MM-DD HH:mm:ss')
+    fs.mkdirsSync(distDir)
+    fs.writeFileSync(nowJson, JSON.stringify({datetime}, null, 2))
+
+    await ftp.connect({
+      host: process.env.FTP_HOST,
+      user: process.env.FTP_USER,
+      password: process.env.FTP_PASSWORD,
+    })
+    await ftp.cwd('/json')
+    const input = fs.createReadStream(nowJson)
+    await ftp.put(input, 'now.json')
+
+    console.log(`uploaded ${nowJson}`)
+
+    ftp.end()
+  } catch (error) {
+    console.error({error})
+    ftp.end()
+  }
 }
 
 main()
