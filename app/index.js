@@ -8,6 +8,8 @@ app.get('/', (req, res) => {
   res.end()
 })
 
+app.get('/meta', require('./meta/index'))
+
 app.listen(app.get('port'), () => {
   console.log({serve: `http://localhost:${port}`})
 })
